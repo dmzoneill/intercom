@@ -1,0 +1,13 @@
+{application, intercom,
+ [
+  {description, "Intercom Application"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  doorlock
+                 ]},
+  {mod, { intercom_app, []}},
+  {env, []}
+ ]}.

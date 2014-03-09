@@ -1,0 +1,13 @@
+{application, doorlock,
+ [
+  {description, "Provides methods to lock and unlock the door"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  erlang_ale
+                 ]},
+  {mod, { doorlock_app, []}},
+  {env, []}
+ ]}.

@@ -1,0 +1,10 @@
+deps/**
+ebin/**
+*.beam
+.eunit
+*~
+#*
+.dialyzer.plt
+.iml
+.idea/**
+.rebar/**
