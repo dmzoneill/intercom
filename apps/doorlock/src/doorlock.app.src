@@ -9,5 +9,12 @@
                   erlang_ale
                  ]},
   {mod, { doorlock_app, []}},
-  {env, []}
+  {env, [
+    {pin, 22},            %% pin number
+    {locked, 0},          %% low
+    {unlocked, 1},        %% high
+    {timeout, 5000},      %% lock after timeout
+    {min_timeout, 3000},  %% client can't set timeout less than min_timeout
+    {max_timeout, 15000}  %% client can't set timeout more than max_timeout
+  ]}
  ]}.
