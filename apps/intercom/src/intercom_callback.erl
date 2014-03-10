@@ -5,28 +5,37 @@
 -include_lib("elli/include/elli.hrl").
 -behaviour(elli_handler).
 
+-define(API_VER, <<"1.0">>).
 -define(JSON_RESP, {<<"Content-type">>, <<"application/json; charset=UTF-8">>}).
 
 handle(Req, _Args) ->
     %% Delegate to our handler function
     handle(Req#req.method, elli_request:path(Req), Req).
 
-handle('GET', [<<"doorlock">>], _Req) ->
+handle('GET', [<<"intercom">>, ?API_VER, <<"door">>], _Req) ->
   {ok, Status} = doorlock:status(),
   {ok, [?JSON_RESP], jiffy:encode({Status})};
 
-handle('PUT', [<<"doorlock">>, <<"unlock">>], _Req) ->
-  {ok, Status} = doorlock:unlock(),
-  {ok, [?JSON_RESP], jiffy:encode({Status})};
+handle('PUT', [<<"intercom">>, ?API_VER, <<"door">>, <<"unlock">>], Req) ->
+  Timeout = elli_request:get_arg(<<"timeout">>, Req, elli_request:post_arg(<<"timeout">>, Req)),
+  Resp =
+    case Timeout of
+      undefined ->
+        doorlock:unlock();
+      _ ->
+        T = binary_to_integer(Timeout),
+        doorlock:unlock(T)
+    end,
+  case Resp of
+    {ok, Status} ->
+      {ok, [?JSON_RESP], jiffy:encode({Status})};
+    {error, Msg} ->
+      {400, [], list_to_binary(Msg)}
+  end;
 
-handle('PUT', [<<"doorlock">>, <<"lock">>], _Req) ->
+handle('PUT', [<<"intercom">>, ?API_VER, <<"door">>, <<"lock">>], _Req) ->
   {ok, Status} = doorlock:lock(),
   {ok, [?JSON_RESP], jiffy:encode({Status})};
-
-handle('GET',[<<"hello">>, <<"world">>], _Req) ->
-    %% Reply with a normal response. 'ok' can be used instead of '200'
-    %% to signal success.
-    {ok, [], <<"Hello World!">>};
 
 handle(_, _, _Req) ->
     {404, [], <<"Not Found">>}.
