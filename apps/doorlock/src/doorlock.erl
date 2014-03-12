@@ -1,13 +1,5 @@
-%%%-------------------------------------------------------------------
-%%% @author Mario
-%%% @copyright (C) 2014, <COMPANY>
-%%% @doc
-%%%
-%%% @end
-%%% Created : 09. III 2014 15:07
-%%%-------------------------------------------------------------------
 -module(doorlock).
--author("Mario").
+-author("Mario Georgiev").
 
 -behaviour(gen_server).
 
